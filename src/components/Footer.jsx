@@ -1,3 +1,8 @@
+import React from 'react';
+
+
+function Footer() {
+  return (
 <section>
   <div className="max-w-8xl mx-auto flex flex-col px-6 py-20 lg:px-10 xl:px-24">
     {/* LOGO */}
@@ -84,3 +89,8 @@
     </div>
   </div>
 </section>
+
+);
+}
+
+export default Footer;

@@ -17,7 +17,7 @@ function Profile(){
                   {/* User Info */}
                   <div className="mx-auto mb-14 mt-14 flex max-w-sm flex-col items-center justify-center">
                     {/* Remplacez "profilePic" par l'URL de votre image si elle est hébergée en ligne */}
-                    <img src={profilePic} alt="Photo de profil" className="mb-4 w-24 rounded-full" />
+                    
                     <h3 className="text-lg font-bold">Nom d'Utilisateur</h3>
                     <p className="text-sm text-[#647084]">nom@exemple.com</p>
                   </div>

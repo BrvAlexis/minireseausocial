@@ -16,26 +16,26 @@ function Register() {
           {/* Button */}
           <a href="#" className="mx-auto flex max-w-sm justify-center bg-[#276ef1] px-8 py-4 text-center font-semibold text-white shadow-lg">
             {/* Remplacez "googleLogo" par l'URL de votre image si elle est hébergée en ligne */}
-            <img src={googleLogo} alt="" className="mr-4" />
+            
             <p className="font-bold">Sign up with Google</p>
           </a>
           {/* Divider */}
           <div className="mx-auto mb-14 mt-14 flex max-w-sm justify-around">
             {/* Remplacez "lineImage" par l'URL de votre image si elle est hébergée en ligne */}
-            <img src={lineImage} alt="" className="inline-block" />
+            
             <p className="text-sm text-[#647084]">or sign up with email</p>
-            <img src={lineImage} alt="" className="inline-block" />
+            
           </div>
           {/* Form */}
           <form className="mx-auto mb-4 max-w-sm pb-4" name="wf-form-password" method="get">
             <div className="relative">
               {/* Remplacez "envelopeIcon" par l'URL de votre image si elle est hébergée en ligne */}
-              <img alt="" src={envelopeIcon} className="absolute bottom-0 left-[5%] right-auto top-[26%] inline-block" />
+             
               <input type="email" className="mb-4 block h-9 w-full border border-black bg-white px-3 py-6 pl-14 text-sm text-[#333333]" maxLength="256" name="name" placeholder="Email Address" required="" />
             </div>
             <div className="relative mb-4 pb-2">
               {/* Remplacez "lockIcon" par l'URL de votre image si elle est hébergée en ligne */}
-              <img alt="" src={lockIcon} className="absolute bottom-0 left-[5%] right-auto top-[26%] inline-block" />
+              
               <input type="password" className="mb-4 block h-9 w-full border border-black bg-white px-3 py-6 pl-14 text-sm text-[#333333]" placeholder="Password (min 8 characters)" required="" />
             </div>
             <a href="#" className="flex max-w-full grid-cols-2 flex-row items-center justify-center bg-[#276ef1] px-8 py-4 text-center font-semibold text-white shadow-lg">
