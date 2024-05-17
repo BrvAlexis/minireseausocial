@@ -16,8 +16,10 @@ function Login() {
     .then(response => {
       if (response.data.jwt) {
         localStorage.setItem('jwt', response.data.jwt);
+        // Stocker également l'ID de l'utilisateur dans le localStorage
+      localStorage.setItem('user', JSON.stringify({ id: response.data.user.id }));
         console.log('Connexion réussie et utilisateur connecté');
-        navigate('/profile'); // Redirige l'utilisateur vers la page de profil
+        navigate('/');
       } else {
         console.error('Erreur lors de la connexion :', response.data.message);
       }

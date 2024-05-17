@@ -7,6 +7,7 @@ import Register from './components/Register.jsx';
 import Login from './components/Login.jsx';
 import Profile from './components/Profile.jsx';
 import Post from './components/Post.jsx';
+import FormPost from './components/FormPost.jsx';
 
 function App() {
   return (
@@ -16,7 +17,8 @@ function App() {
       <Route path="/" element={
           <>
             <Home />
-            <Post /> 
+            <Post />
+            <FormPost /> 
           </>
         } />
         <Route path="/register" element={<Register />} />
