@@ -1,34 +1,73 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate(); // Hook pour la redirection
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    axios.post('http://localhost:1337/api/auth/local', {
+      identifier: email,
+      password
+    })
+    .then(response => {
+      if (response.data.jwt) {
+        localStorage.setItem('jwt', response.data.jwt);
+        console.log('Connexion réussie et utilisateur connecté');
+        navigate('/profile'); // Redirige l'utilisateur vers la page de profil
+      } else {
+        console.error('Erreur lors de la connexion :', response.data.message);
+      }
+    })
+    .catch(error => {
+      console.error('Il y a eu une erreur !', error);
+    });
+  };
+
   return (
-    <section>
-      <div className="py-16 md:py-24 lg:py-32">
-        <div className="mx-auto max-w-xl bg-[#f2f2f7] px-5 py-12 text-center md:px-10">
-          <h2 className="text-3xl font-bold md:text-5xl">Login to Your Account</h2>
-          <p className="mx-auto mb-5 mt-4 max-w-xl text-[#647084] md:mb-8">
-            Welcome back! Please enter your details to sign in.
-          </p>
-          <form className="mx-auto mb-4 max-w-sm pb-4" name="wf-form-login" method="post">
-            <div className="relative mb-4">
-              <input type="email" className="mb-4 block h-9 w-full border border-black bg-white px-3 py-6 pl-14 text-sm text-[#333333]" maxLength="256" name="email" placeholder="Email Address" required="" />
-            </div>
-            <div className="relative mb-4">
-              <input type="password" className="block h-9 w-full border border-black bg-white px-3 py-6 pl-14 text-sm text-[#333333]" placeholder="Password" required="" />
-            </div>
-            <button type="submit" className="flex max-w-full justify-center bg-[#276ef1] px-8 py-4 text-center font-semibold text-white shadow-lg">
-              <p className="font-bold">Login</p>
+    <div className="container mx-auto p-4 flex justify-center items-center h-screen">
+      <div className="w-full max-w-md">
+        <form onSubmit={handleSubmit} className="bg-white shadow-lg rounded px-12 pt-6 pb-8 mb-4">
+          <div className="text-gray-800 text-2xl flex justify-center border-b-2 py-2 mb-4">
+            Connexion
+          </div>
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">
+              Adresse Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              required
+            />
+          </div>
+          <div className="mb-6">
+            <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">
+              Mot de passe
+            </label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+              required
+            />
+          </div>
+          <div className="flex items-center justify-between">
+            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+              Se connecter
             </button>
-          </form>
-          <p className="text-sm text-[#636262]">
-            Don't have an account? 
-            <a href="#" className="font-[Montserrat,_sans-serif] text-sm font-bold text-black">
-              Sign up now
-            </a>
-          </p>
-        </div>
+          </div>
+        </form>
       </div>
-    </section>
+    </div>
   );
 }
 
