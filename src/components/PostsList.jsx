@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAtom } from 'jotai';
 import { authAtom } from '../jotai/authAtoms.jsx';
+import { Link } from 'react-router-dom';
 
 function PostsList() {
   const [auth, setAuth] = useAtom(authAtom);
@@ -42,8 +43,8 @@ function PostsList() {
       {posts.map((post) => (
         <div key={post.id} className="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto my-4">
           <p className="text-gray-700">{post.attributes.text}</p>
-          {/* Affichez l'adresse e-mail de l'auteur */}
-          <p className="text-gray-500">Auteur : {auth.email}</p>
+          {/* Utilisez le composant Link pour créer un lien vers la page AuthorProfile */}
+          <Link to={`/author/${auth}`}>Auteur : {auth.email}</Link>
         </div>
       ))}
     </div>
