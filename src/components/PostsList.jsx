@@ -8,7 +8,8 @@ function PostsList() {
   const [auth, setAuth] = useAtom(authAtom);
 
   useEffect(() => {
-    if (auth.token) {
+    // Vérifiez si l'utilisateur est connecté avant de faire la requête
+    if (auth.isLoggedIn && auth.token) {
       axios.get('http://localhost:1337/api/posts?populate=user', {
         headers: {
           Authorization: `Bearer ${auth.token}`
@@ -29,10 +30,11 @@ function PostsList() {
         setAuth({ ...auth, posts: [] });
       });
     }
-  }, [auth.token]);
+  }, [auth.isLoggedIn, auth.token]);
 
   // Assurez-vous que posts est un tableau avant de l'utiliser avec map
   const postsToRender = auth.posts || [];
+
 
 
   return (
@@ -48,3 +50,4 @@ function PostsList() {
 }
 
 export default PostsList;
+

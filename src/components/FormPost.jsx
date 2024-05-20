@@ -34,6 +34,11 @@ function FormPost() {
     }
   };
 
+   // Afficher le formulaire uniquement si l'utilisateur est connecté
+   if (!auth.isLoggedIn) {
+    return null; // ou vous pouvez rediriger l'utilisateur vers la page de connexion
+  }
+
   return (
     <form onSubmit={handleSubmit}>
       <textarea

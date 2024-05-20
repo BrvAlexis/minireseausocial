@@ -1,12 +1,21 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAtom } from 'jotai';
+import { authAtom } from '../jotai/authAtoms';
 
 function Navbar() {
   const navigate = useNavigate();
+  const [, setAuth] = useAtom(authAtom);
 
   const handleLogout = () => {
-    // Effacer le JWT du stockage local
-    localStorage.removeItem('jwt');
+    // Mettre à jour l'état d'authentification avec Jotai
+    setAuth({
+      isLoggedIn: false,
+      token: null,
+      userId: null,
+      email: '',
+      posts: []
+    });
     // Rediriger l'utilisateur vers la page de connexion
     navigate('/login');
   };
