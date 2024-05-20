@@ -1,30 +1,29 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useAtom } from 'jotai';
+import { authAtom } from '../jotai/authAtoms.jsx';
 
 function FormPost() {
   const [text, setText] = useState('');
-  const token = localStorage.getItem('jwt');
-  const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
-  const userId = user ? user.id : null;
-
-  console.log('Token JWT:', token);
-  console.log('ID de l\'utilisateur:', userId);
+  const [auth, setAuth] = useAtom(authAtom);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (token && userId) {
+    if (auth.token && auth.userId) {
       axios.post('http://localhost:1337/api/posts', {
         data: {
           text: text,
-          user: userId
+          user: auth.userId
         }
       }, {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${auth.token}`
         }
       })
       .then(response => {
         console.log('Post créé avec succès:', response.data);
+        // Mettre à jour l'atome avec le nouveau post
+        setAuth({ ...auth, posts: [...auth.posts, response.data.data] });
         setText('');
       })
       .catch(error => {

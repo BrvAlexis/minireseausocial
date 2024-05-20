@@ -6,5 +6,6 @@ export const authAtom = atom({
   token: null,
   userId: null,
   email: '',
+  posts: [],
 });
 
