@@ -9,6 +9,7 @@ import Profile from './components/Profile.jsx';
 
 import FormPost from './components/FormPost.jsx';
 import PostsList from './components/PostsList.jsx';
+import AuthorProfile from './components/AuthorProfil.jsx';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path='/authorprofil' element={<AuthorProfile />} />
       </Routes>
       <Footer />
     </Router>
