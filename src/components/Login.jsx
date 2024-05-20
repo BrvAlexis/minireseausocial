@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAtom } from 'jotai';
+import { authAtom } from '../jotai/authAtoms.jsx';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [auth, setAuth] = useAtom(authAtom);
   const navigate = useNavigate(); // Hook pour la redirection
 
   const handleSubmit = (event) => {
@@ -15,11 +18,9 @@ function Login() {
     })
     .then(response => {
       if (response.data.jwt) {
-        localStorage.setItem('jwt', response.data.jwt);
-        // Stocker également l'ID de l'utilisateur dans le localStorage
-      localStorage.setItem('user', JSON.stringify({ id: response.data.user.id }));
+        setAuth({ isLoggedIn: true, token: response.data.jwt, userId: response.data.user.id, email });
         console.log('Connexion réussie et utilisateur connecté');
-        navigate('/');
+        navigate('/'); // Redirige l'utilisateur vers la page d'accueil
       } else {
         console.error('Erreur lors de la connexion :', response.data.message);
       }

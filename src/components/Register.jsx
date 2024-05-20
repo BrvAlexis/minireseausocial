@@ -1,14 +1,15 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-
+import { useAtom } from 'jotai';
+import { authAtom } from '../jotai/authAtoms.jsx';
 
 function Register() {
-
-    const [username, setUsername] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // Hook pour la redirection
+  const [auth, setAuth] = useAtom(authAtom); // Utilisez l'atome d'authentification
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -24,17 +25,19 @@ function Register() {
 
       const data = await response.json();
 
-         if (data.jwt) {
-        localStorage.setItem('jwt', data.jwt);
+      if (data.jwt) {
+        // Mettre à jour l'atome d'authentification avec les informations de l'utilisateur
+        setAuth({ isLoggedIn: true, token: data.jwt, userId: data.user.id, email: data.user.email });
         console.log('Inscription réussie et utilisateur connecté');
         navigate('/profile'); // Redirige l'utilisateur vers la page de profil
       } else {
-        console.error('Erreur lors de :', data.message);
+        console.error('Erreur lors de l\'inscription:', data.message);
       }
     } catch (error) {
       console.error('Erreur lors de la connexion à l\'API:', error);
     }
   };
+
 
   return (
     <div className="container mx-auto p-4 flex justify-center items-center h-screen">
