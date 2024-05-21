@@ -10,7 +10,6 @@ function PostsList() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    // Vérifiez si l'utilisateur est connecté avant de faire la requête
     if (auth.isLoggedIn && auth.token) {
       axios
         .get('http://localhost:1337/api/posts?populate=user&sort=createdAt:desc', {
@@ -19,12 +18,18 @@ function PostsList() {
           },
         })
         .then((response) => {
+          // Vérifiez que la réponse contient bien la propriété 'data'
           if (response.data && Array.isArray(response.data.data)) {
-            const updatedPosts = response.data.data.map((post) => ({
-              ...post,
-              isLiked: false, // Ajoutez une nouvelle propriété pour gérer l'état du like
-              likes: post.attributes.likes || 0, // Utilisez les likes existants ou démarrez à 0
-            }));
+            const updatedPosts = response.data.data.map((post) => {
+              // Assurez-vous que chaque post a une propriété 'user' et 'id' avant d'accéder à 'data.id'
+              const userId = post.attributes.user && post.attributes.user.data ? post.attributes.user.data.id : null;
+              return {
+                ...post,
+                userId: userId, // Utilisez l'ID de l'utilisateur extrait ou null si non disponible
+                isLiked: false,
+                likes: post.attributes.likes || 0,
+              };
+            });
             setPosts(updatedPosts);
           } else {
             setPosts([]);
@@ -81,31 +86,76 @@ const handleLike = (postId) => {
       setPosts(posts);
     });
 };
+
+const handleDelete = (postId) => {
+  console.log('Posts actuels:', posts);
+  console.log('ID du post à supprimer:', postId);
+
+  const post = posts.find((p) => p.id === postId);
+  if (!post) {
+    console.error('Erreur : Le post à supprimer est introuvable.');
+    return;
+  }
+
+  if (post.userId !== auth.userId) {
+    console.log('Action non autorisée : vous ne pouvez pas supprimer les posts des autres utilisateurs.');
+    return;
+  }
+
+  axios
+    .delete(`http://localhost:1337/api/posts/${postId}`, {
+      headers: {
+        Authorization: `Bearer ${auth.token}`, // Utilisez le token JWT pour l'authentification
+      },
+    })
+    .then((response) => {
+      // Suppression réussie, mettez à jour l'état pour retirer le post de l'affichage
+      setPosts(posts.filter((p) => p.id !== postId));
+      console.log('Post supprimé avec succès');
+    })
+    .catch((error) => {
+      console.error('Erreur lors de la suppression du post :', error);
+    });
+};
+
+
   // Ajoutez des instructions console.log pour déboguer
   console.log('Auth:', auth);
   
 
   return (
-    <div>
-      {posts.map((post) => (
-        <div key={post.id} className="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto my-4">
-          <p className="text-gray-700">{post.attributes.text}</p>
-          {/* Utilisez le composant Link pour créer un lien vers la page AuthorProfile */}
-          <Link to={`/author/${auth}`}>Auteur : {auth.email}</Link>
-          <div className="mt-4 flex items-center justify-between">
-            <button
-              type="button"
-              onClick={() => handleLike(post.id)}
-              className={`flex items-center ${post.isLiked ? 'text-blue-600' : 'text-gray-500'} hover:text-blue-600 transition duration-300 ease-in-out`}
-            >
-              <HeartIcon className="h-6 w-6" />
-              <span className="ml-1">{post.likes} J'aime</span>
-            </button>
-            {/* ... */}
-          </div>
+    <div className="flex flex-wrap -mx-2">
+  {posts.map((post) => (
+    <div key={post.id} className="p-2 w-1/5">
+    <div className="bg-white p-6 rounded-lg shadow-lg">
+      <p className="text-gray-700">{post.attributes.text}</p>
+      
+      <Link to={`/author/${auth}`} className="text-blue-600 font-semibold">
+        Auteur : {auth.email}
+      </Link>
+      <p className="text-gray-700">{post.attributes.text}</p>
+      <div className="mt-4 flex items-center justify-between">
+        <button
+          type="button"
+          onClick={() => handleLike(post.id)}
+          className={`flex items-center ${post.isLiked ? 'text-blue-600' : 'text-gray-500'} hover:text-blue-600 transition duration-300 ease-in-out`}
+        >
+          <HeartIcon className="h-6 w-6" />
+          <span className="ml-1">{post.likes} J'aime</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => handleDelete(post.id)} // Passez l'identifiant du post ici
+          className="flex items-center text-gray-500 hover:text-gray-600 transition duration-300 ease-in-out"
+        >
+          <TrashIcon className="h-6 w-6" />
+          <span className="ml-1">Supprimer</span>
+        </button>
         </div>
-      ))}
+      </div>
     </div>
+  ))}
+</div>
   );
 }
 

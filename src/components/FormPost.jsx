@@ -40,18 +40,21 @@ function FormPost() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <textarea
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Qu'avez-vous à dire ?"
-        className="w-full rounded-md border border-gray-300 p-2 text-sm shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
-        required
-      ></textarea>
-      <button type="submit" className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-        Publier
-      </button>
-    </form>
+    <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-xl overflow-hidden p-6 space-y-6 max-w-md mx-auto">
+  <textarea
+    value={text}
+    onChange={(e) => setText(e.target.value)}
+    placeholder="Qu'avez-vous à dire ?"
+    className="w-full rounded-md border border-gray-300 p-4 text-sm shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 transition duration-200 ease-in-out transform hover:-translate-y-1"
+    required
+  ></textarea>
+  <button
+    type="submit"
+    className="mt-5 inline-block w-full cursor-pointer bg-[#276ef1] px-6 py-3 text-center font-semibold text-white transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-xl"
+  >
+    Publier
+  </button>
+</form>
   );
 }
 

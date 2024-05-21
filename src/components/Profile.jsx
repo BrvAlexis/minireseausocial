@@ -61,29 +61,40 @@ function Profile() {
           {auth.description && <p className="text-sm text-gray-600">{auth.description}</p>}
         </div>
         <form onSubmit={handleUpdateProfile} className="space-y-6">
-          <div className="mb-4">
-            <input
-              type="text"
-              value={auth.username}
-              onChange={(e) => setAuth({ ...auth, username: e.target.value })}
-              className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
-              placeholder="Nom Complet"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <textarea
-              value={auth.description}
-              onChange={(e) => setAuth({ ...auth, description: e.target.value })}
-              className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
-              placeholder="Description"
-              required
-            ></textarea>
-          </div>
-          <button type="submit" className="w-full rounded-md bg-blue-500 px-4 py-2 text-center font-semibold text-white shadow-lg hover:bg-blue-700">
-            Mettre à jour le profil
-          </button>
-        </form>
+  <div className="mb-4">
+    <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+      Nom Complet
+    </label>
+    <input
+      type="text"
+      id="username"
+      value={auth.username}
+      onChange={(e) => setAuth({ ...auth, username: e.target.value })}
+      className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+      placeholder="Nom Complet"
+      required
+    />
+  </div>
+  <div className="mb-4">
+    <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+      Description
+    </label>
+    <textarea
+      id="description"
+      value={auth.description}
+      onChange={(e) => setAuth({ ...auth, description: e.target.value })}
+      className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+      placeholder="Description"
+      required
+    ></textarea>
+  </div>
+  <button
+  type="submit"
+  className="mt-5 inline-block cursor-pointer bg-[#276ef1] px-6 py-3 text-center font-semibold text-white transition [box-shadow:rgb(171,_196,_245)_-8px_8px] hover:[box-shadow:rgb(171,_196,_245)_0px_0px] md:mt-0 rounded-md w-full"
+>
+  Mettre à jour le profil
+</button>
+</form>
         <p className="mt-6 text-center text-sm text-gray-600">
           Besoin d'aide? 
           <a href="#" className="font-bold text-black">

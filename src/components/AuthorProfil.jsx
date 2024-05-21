@@ -61,9 +61,8 @@ const AuthorProfile = () => {
           {/* Affichez les posts de l'utilisateur ici */}
           <div className="space-y-4 mt-4">
             {posts.map((post) => (
-              <div key={post.id} className="bg-gray-100 p-4 rounded-lg">
+              <div key={post.id} className="mt-5 inline-block cursor-pointer bg-[#276ef1] px-6 py-3 text-center font-semibold text-white transition [box-shadow:rgb(171,_196,_245)_-8px_8px] hover:[box-shadow:rgb(171,_196,_245)_0px_0px] md:mt-0 rounded-lg">
                 <h3 className="text-lg font-semibold">{post.attributes.text}</h3>
-                
               </div>
             ))}
           </div>

@@ -5,10 +5,7 @@ function Footer() {
   return (
 <section>
   <div className="max-w-8xl mx-auto flex flex-col px-6 py-20 lg:px-10 xl:px-24">
-    {/* LOGO */}
-    <a href="#" className="mb-10 inline-block max-w-full">
-      <img src="https://assets.website-files.com/6357722e2a5f19121d37f84d/635b61da1d90b7ae83b7209a_Group%2047874-3.png" alt="" className="inline-block max-h-10" />
-    </a>
+   
     {/* MIDDLE CONTAINER */}
     <div className="mt-7 lg:flex lg:flex-row lg:justify-between">
       {/* FOOTER LINKS */}

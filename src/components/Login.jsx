@@ -64,9 +64,12 @@ function Login() {
             />
           </div>
           <div className="flex items-center justify-between">
-            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-              Se connecter
-            </button>
+          <button
+  type="submit"
+  className="mt-5 inline-block w-full cursor-pointer bg-[#276ef1] px-6 py-3 text-center font-semibold text-white transition [box-shadow:rgb(171,_196,_245)_-8px_8px] hover:[box-shadow:rgb(171,_196,_245)_0px_0px]"
+>
+  Se connecter
+</button>
           </div>
         </form>
       </div>
