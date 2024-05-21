@@ -1,43 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import axios from 'axios';
 import { useAtom } from 'jotai';
-import { authAtom } from '../jotai/authAtoms.jsx';
+import { authAtom, saveToken } from '../jotai/authAtoms.jsx';
 
 function Register() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [auth, setAuth] = useAtom(authAtom); // Utilisez l'atome d'authentification
+  const [auth, setAuth] = useAtom(authAtom);
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:1337/api/auth/local/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, email, password }),
+      const response = await axios.post('http://localhost:1337/api/auth/local/register', {
+        username,
+        email,
+        password
       });
 
-      const data = await response.json();
-
-      if (data.jwt) {
-        // Mettre à jour l'atome d'authentification avec les informations de l'utilisateur
-        setAuth({ isLoggedIn: true, token: data.jwt, userId: data.user.id, email: data.user.email });
+      if (response.data.jwt) {
+        // Utilisez la fonction saveToken pour enregistrer le JWT dans un cookie
+        saveToken(response.data.jwt);
+        // Mettez à jour l'état global d'authentification avec Jotai
+        setAuth({ isLoggedIn: true, token: response.data.jwt, userId: response.data.user.id, email: response.data.user.email });
         console.log('Inscription réussie et utilisateur connecté');
         navigate('/profile'); // Redirige l'utilisateur vers la page de profil
       } else {
-        console.error('Erreur lors de l\'inscription:', data.message);
+        console.error('Erreur lors de l\'inscription:', response.data.message);
       }
     } catch (error) {
       console.error('Erreur lors de la connexion à l\'API:', error);
     }
   };
-
 
   return (
     <div className="container mx-auto p-4 flex justify-center items-center h-screen">

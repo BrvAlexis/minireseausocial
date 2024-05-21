@@ -2,32 +2,38 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAtom } from 'jotai';
-import { authAtom } from '../jotai/authAtoms.jsx';
+import { authAtom, saveToken, removeToken } from '../jotai/authAtoms.jsx';
+
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [auth, setAuth] = useAtom(authAtom);
-  const navigate = useNavigate(); // Hook pour la redirection
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    axios.post('http://localhost:1337/api/auth/local', {
-      identifier: email,
-      password
-    })
-    .then(response => {
+    try {
+      const response = await axios.post('http://localhost:1337/api/auth/local', {
+        identifier: email,
+        password
+      });
       if (response.data.jwt) {
-        setAuth({ isLoggedIn: true, token: response.data.jwt, userId: response.data.user.id, email });
+        // Utilisez la fonction saveToken pour enregistrer le JWT dans un cookie
+        saveToken(response.data.jwt);
+        // Mettez à jour l'état global d'authentification avec Jotai
+        setAuth({ ...auth, isLoggedIn: true, token: response.data.jwt, userId: response.data.user.id, email });
         console.log('Connexion réussie et utilisateur connecté');
         navigate('/'); // Redirige l'utilisateur vers la page d'accueil
       } else {
         console.error('Erreur lors de la connexion :', response.data.message);
       }
-    })
-    .catch(error => {
+    } catch (error) {
       console.error('Il y a eu une erreur !', error);
-    });
+      // Utilisez la fonction removeToken pour supprimer le JWT du cookie en cas d'erreur
+      removeToken();
+      setAuth({ ...auth, isLoggedIn: false, token: null, userId: null, email: '' });
+    }
   };
 
   return (

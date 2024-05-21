@@ -1,13 +1,18 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAtom } from 'jotai';
-import { authAtom } from '../jotai/authAtoms';
+import { authAtom, removeToken, removeSavedPosts } from '../jotai/authAtoms.jsx';
+import { Link } from 'react-router-dom';
 
 function Navbar() {
   const navigate = useNavigate();
   const [, setAuth] = useAtom(authAtom);
 
   const handleLogout = () => {
+    // Supprime le token JWT et les posts du cookie
+    removeToken();
+    removeSavedPosts();
+
     // Mettre à jour l'état d'authentification avec Jotai
     setAuth({
       isLoggedIn: false,
@@ -16,6 +21,7 @@ function Navbar() {
       email: '',
       posts: []
     });
+
     // Rediriger l'utilisateur vers la page de connexion
     navigate('/login');
   };

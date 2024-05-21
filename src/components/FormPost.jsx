@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useAtom } from 'jotai';
-import { authAtom } from '../jotai/authAtoms.jsx';
+import { authAtom, saveToken, getToken, removeToken } from '../jotai/authAtoms.jsx';
 
 function FormPost() {
   const [text, setText] = useState('');
@@ -9,7 +9,9 @@ function FormPost() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (auth.token && auth.userId) {
+    const token = getToken();
+
+    if (token) {
       axios.post('http://localhost:1337/api/posts', {
         data: {
           text: text,
@@ -17,7 +19,7 @@ function FormPost() {
         }
       }, {
         headers: {
-          Authorization: `Bearer ${auth.token}`
+          Authorization: `Bearer ${token}` // Utilisez le token du cookie
         }
       })
       .then(response => {
@@ -34,10 +36,8 @@ function FormPost() {
     }
   };
 
-   // Afficher le formulaire uniquement si l'utilisateur est connecté
-   if (!auth.isLoggedIn) {
-    return null; // ou vous pouvez rediriger l'utilisateur vers la page de connexion
-  }
+  
+
 
   return (
     <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-xl overflow-hidden p-6 space-y-6 max-w-md mx-auto">
